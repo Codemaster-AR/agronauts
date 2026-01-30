@@ -16,7 +16,7 @@ Broadcom APDS-9960 - Colour plant detection, motion detection for air, proximity
 ### The Motion / IMU Sensor
 Model Name (Rev2): LSM6DSOX (6-axis IMU)
 
-Model Name (Original): LSM6DS3 - Checks for motion in plants and growth.
+Model Name (Original): LSM6DS3 - Checks for waves for switching betweeen screens.
 
 ### Touch captive sensors for menu navigation (on the spot)
 Users can also use the board directly to see data and choose between menus when they do not have their phone. 
