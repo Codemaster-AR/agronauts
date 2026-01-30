@@ -41,3 +41,12 @@ We would like to thank our supporters and partners who have helped make this pro
 
 ## Canva
 Canva: [https://www.canva.com/design/DAG4MQmd-_A/zSiH63_r8whHYFIFrM_Unw/edit?utm_content=DAG4MQmd-_A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton](https://www.canva.com/design/DAG4MQmd-_A/zSiH63_r8whHYFIFrM_Unw/edit?utm_content=DAG4MQmd-_A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+## Presentation:
+[https://innoventureseducation-my.sharepoint.com/:p:/g/personal/dia17068_diaestudents_com/IQAfDKwijQ9JT4bmWVVcG1gwAdfNK84cIVPlQeGL6nnroT8?e=9Gm3RR](https://innoventureseducation-my.sharepoint.com/:p:/g/personal/dia17068_diaestudents_com/IQAfDKwijQ9JT4bmWVVcG1gwAdfNK84cIVPlQeGL6nnroT8?e=9Gm3RR)
+
+## Sensors for the MKR 1010
+[https://github.com/Codemaster-AR/agronauts/blob/main/sensors.md](https://github.com/Codemaster-AR/agronauts/blob/main/sensors.md)
+
+## Controller - set up your own Arduino IoT!
+[https://codemaster-ar.github.io/agronauts-controller/](https://codemaster-ar.github.io/agronauts-controller/)
