@@ -65,3 +65,7 @@ Used:
 [https://tinypng.com/](https://tinypng.com/)
 
 [https://www.google.com/search?q=image+compressor&oq=image+compressor&gs_lcrp=EgZjaHJvbWUqCggAEAAYsQMYgAQyCggAEAAYsQMYgAQyDQgBEAAYgwEYsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyBwgFEAAYgAQyBwgGEAAYgAQyBwgHEAAYgAQyDQgIEC4YxwEY0QMYgAQyBwgJEAAYgATSAQgyNjExajBqN6gCALACAA&sourceid=chrome&ie=UTF-8](https://www.google.com/search?q=image+compressor&oq=image+compressor&gs_lcrp=EgZjaHJvbWUqCggAEAAYsQMYgAQyCggAEAAYsQMYgAQyDQgBEAAYgwEYsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyBwgFEAAYgAQyBwgGEAAYgAQyBwgHEAAYgAQyDQgIEC4YxwEY0QMYgAQyBwgJEAAYgATSAQgyNjExajBqN6gCALACAA&sourceid=chrome&ie=UTF-8)
+
+
+##
+Everything is copyright except the credit links.
