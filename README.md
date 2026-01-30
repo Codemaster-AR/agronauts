@@ -66,6 +66,9 @@ Used:
 
 [https://www.google.com/search?q=image+compressor&oq=image+compressor&gs_lcrp=EgZjaHJvbWUqCggAEAAYsQMYgAQyCggAEAAYsQMYgAQyDQgBEAAYgwEYsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyBwgFEAAYgAQyBwgGEAAYgAQyBwgHEAAYgAQyDQgIEC4YxwEY0QMYgAQyBwgJEAAYgATSAQgyNjExajBqN6gCALACAA&sourceid=chrome&ie=UTF-8](https://www.google.com/search?q=image+compressor&oq=image+compressor&gs_lcrp=EgZjaHJvbWUqCggAEAAYsQMYgAQyCggAEAAYsQMYgAQyDQgBEAAYgwEYsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyBwgFEAAYgAQyBwgGEAAYgAQyBwgHEAAYgAQyDQgIEC4YxwEY0QMYgAQyBwgJEAAYgATSAQgyNjExajBqN6gCALACAA&sourceid=chrome&ie=UTF-8)
 
-Best Qr code generator: [https://qrcodecreator.com/dashboard](https://qrcodecreator.com/dashboard)
-### Copyright
-Everything is copyright except the credit links.
+Best QR code generator: [https://qrcodecreator.com/dashboard](https://qrcodecreator.com/dashboard)
+## Copyright
+Everything is copyrighted except the credit links.
+
+### Check out my other project:
+[https://github.com/Codemaster-AR/GPR-Hub](https://github.com/Codemaster-AR/GPR-Hub)
