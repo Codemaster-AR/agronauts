@@ -25,16 +25,6 @@ Hardware: QT1011
 
 Controlled by the Microchip AT42QT1011
 
-Button IDs:
-TOUCH0
-
-TOUCH1
-
-TOUCH2
-
-TOUCH3
-
-TOUCH4
 
 ### Wifi board
 MKR 1010
