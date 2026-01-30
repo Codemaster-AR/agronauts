@@ -51,7 +51,7 @@ Canva: [https://www.canva.com/design/DAG4MQmd-_A/zSiH63_r8whHYFIFrM_Unw/edit?utm
 ## Controller - set up your own Arduino IoT!
 [https://codemaster-ar.github.io/agronauts-controller/](https://codemaster-ar.github.io/agronauts-controller/)
 
-##Compressor:
+## Compressor:
 Used:
 [https://www.iloveimg.com/compress-image](https://www.iloveimg.com/compress-image)
 [https://compressimage.com/en?gad_source=1&gad_campaignid=22453911521&gbraid=0AAAAA-Mry8VYDtoE5KmUA2febOvnh_8EA&gclid=Cj0KCQiAyvHLBhDlARIsAHxl6xq18IiASspAO6koM2mhsK-FaGPCvuH-pUe0bd6s15N43FfKnFaGAJwaAvKPEALw_wcB]
@@ -67,5 +67,5 @@ Used:
 [https://www.google.com/search?q=image+compressor&oq=image+compressor&gs_lcrp=EgZjaHJvbWUqCggAEAAYsQMYgAQyCggAEAAYsQMYgAQyDQgBEAAYgwEYsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyBwgFEAAYgAQyBwgGEAAYgAQyBwgHEAAYgAQyDQgIEC4YxwEY0QMYgAQyBwgJEAAYgATSAQgyNjExajBqN6gCALACAA&sourceid=chrome&ie=UTF-8](https://www.google.com/search?q=image+compressor&oq=image+compressor&gs_lcrp=EgZjaHJvbWUqCggAEAAYsQMYgAQyCggAEAAYsQMYgAQyDQgBEAAYgwEYsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyBwgFEAAYgAQyBwgGEAAYgAQyBwgHEAAYgAQyDQgIEC4YxwEY0QMYgAQyBwgJEAAYgATSAQgyNjExajBqN6gCALACAA&sourceid=chrome&ie=UTF-8)
 
 
-##
+### Copyright
 Everything is copyright except the credit links.
