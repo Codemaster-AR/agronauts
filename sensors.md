@@ -10,4 +10,38 @@ Pressure, 300-1100 hPa. kPa format is also accepted. - For saplings, turn off th
 
 Gas, IAQ, VOC, CO2. - Gas detection for plants alerts the user when there is a lack of C02 for immediate action for plant wellbeing.
 
-### Light sensor
+### Color, Gesture, and Proximity Sensor
+Broadcom APDS-9960 - Colour plant detection, motion detection for air, proximity of plant - plant growth.
+
+### The Motion / IMU Sensor
+Model Name (Rev2): LSM6DSOX (6-axis IMU)
+
+Model Name (Original): LSM6DS3 - Checks for motion in plants and growth.
+
+### Touch captive sensors for menu navigation (on the spot)
+Users can also use the board directly to see data and choose between menus when they do not have their phone. 
+
+Hardware: QT1011
+
+Controlled by the Microchip AT42QT1011
+
+Button IDs:
+TOUCH0
+
+TOUCH1
+
+TOUCH2
+
+TOUCH3
+
+TOUCH4
+
+### Wifi board
+MKR 1010
+Rev 2 explore kit
+
+### Links
+[https://docs.arduino.cc/tutorials/mkr-iot-carrier-rev2/cheat-sheet/](https://docs.arduino.cc/tutorials/mkr-iot-carrier-rev2/cheat-sheet/)
+[https://docs.arduino.cc/hardware/mkr-wifi-1010/](https://docs.arduino.cc/hardware/mkr-wifi-1010/)
+[https://www.arduino.cc/](https://www.arduino.cc/)
+[https://docs.arduino.cc/](https://docs.arduino.cc/)
