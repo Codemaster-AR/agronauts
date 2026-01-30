@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Automatic redirect after 1 second -->
+    <meta http-equiv="refresh" content="1;url=https://codemaster-ar.github.io/agronauts/information/">
+    <title>agronauts</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            padding: 2rem;
+        }
+        h1 {
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1rem;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>agronauts</h1>
+        <p class="message">Redirecting you to the information page...</p>
+        <a href="https://codemaster-ar.github.io/agronauts/information/" class="btn">Click here if not redirected</a>
+    </div>
+
+    <script>
+        // JavaScript fallback redirect to ensure it triggers as fast as possible
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = "https://codemaster-ar.github.io/agronauts/information/";
+            }, 500);
+        };
+    </script>
+</body>
+</html>
