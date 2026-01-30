@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agronauts | Sustainable Farming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f0d;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: #e2e8f0;
+        }
+
+        .bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15) 0%, rgba(20, 83, 45, 0.05) 50%, transparent 100%);
+            z-index: -1;
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        .title-glow {
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .btn-action {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            backdrop-filter: blur(4px);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-action:hover {
+            background: rgba(34, 197, 94, 0.9);
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+            transform: translateY(-2px);
+            color: #000;
+        }
+
+        .btn-action:hover svg {
+            fill: #000;
+        }
+
+        .catchphrase {
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin-bottom: -0.5rem;
+            color: rgba(74, 222, 128, 0.7);
+        }
+
+        .contact-footer {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: rgba(148, 163, 184, 0.6);
+            z-index: 20;
+            width: 100%;
+        }
+
+        .contact-link {
+            color: rgba(74, 222, 128, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: rgba(74, 222, 128, 1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="content">
+        <span class="catchphrase text-xs md:text-sm mb-4 block">Cultivating the future</span>
+        
+        <h1 class="text-7xl md:text-9xl font-black tracking-tighter title-glow text-green-400">
+            AGRONAUTS
+        </h1>
+        <p class="mt-6 text-lg md:text-2xl font-light text-green-100 opacity-80 max-w-2xl">
+            Pioneering the future of sustainable agriculture through intelligent design and organic innovation.
+        </p>
+        
+        <div class="mt-12 flex flex-wrap justify-center gap-4">
+            <a href="https://codemaster-ar.github.io/agronauts/about/" target="_blank" class="px-8 py-4 rounded-full text-sm font-bold btn-action uppercase tracking-widest">
+                About us
+            </a>
+            
+            <a href="https://codemaster-ar.github.io/agronauts-controller" target="_blank" class="px-8 py-4 rounded-full text-sm font-bold btn-action uppercase tracking-widest">
+                Controllers
+            </a>
+
+            <a href="https://codemaster-ar.github.io/agronauts/information/" target="_blank" class="px-8 py-4 rounded-full text-sm font-bold btn-action uppercase tracking-widest">
+                Information & Research
+            </a>
+
+            <a href="https://github.com/Codemaster-AR/agronauts" target="_blank" class="px-8 py-4 rounded-full text-sm font-bold btn-action uppercase tracking-widest">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="transition-colors">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.416-4.041-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                GitHub Repository
+            </a>
+        </div>
+    </div>
+
+    <div class="contact-footer text-center">
+        Contact <a href="mailto:codemaster.ar@gmail.com" class="contact-link">codemaster.ar@gmail.com</a> for more details
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * -0.5 - 0.2; 
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y < 0) this.reset();
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(74, 222, 128, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
