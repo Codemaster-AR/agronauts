@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agronauts | Sustainable Farming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f0d;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: #e2e8f0;
+        }
+
+        /* Animated Gradient Background */
+        .bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15) 0%, rgba(20, 83, 45, 0.05) 50%, transparent 100%);
+            z-index: -1;
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        /* Title Floating & Glow Effect */
+        .title-glow {
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .btn-learn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-learn:hover {
+            background: rgba(34, 197, 94, 0.9);
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+            transform: translateY(-2px);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="content">
+        <h1 class="text-7xl md:text-9xl font-black tracking-tighter title-glow text-green-400">
+            AGRONAUTS
+        </h1>
+        <p class="mt-6 text-lg md:text-2xl font-light text-green-100 opacity-80 max-w-2xl">
+            Pioneering the future of sustainable agriculture through intelligent design and organic innovation.
+        </p>
+        
+        <!-- Action Button -->
+        <a href="#" id="learnMoreBtn" class="mt-12 px-8 py-4 rounded-full text-lg font-bold btn-learn uppercase tracking-widest">
+            Learn More
+        </a>
+    </div>
+
+    <script>
+        // Particle Animation Logic
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * -0.5 - 0.2; // Upward movement
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.y < 0) this.reset();
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(74, 222, 128, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        // Custom interaction for button
+        document.getElementById('learnMoreBtn').addEventListener('click', (e) => {
+            if (e.target.getAttribute('href') === "#") {
+                e.preventDefault();
+                const msg = document.createElement('div');
+                msg.innerHTML = "Link coming soon!";
+                msg.style.cssText = "position:fixed; bottom:20px; background:#22c55e; color:black; padding:10px 20px; border-radius:5px; font-weight:bold; animation: fadeOut 2s forwards";
+                document.body.appendChild(msg);
+                setTimeout(() => msg.remove(), 2000);
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+    </style>
+
+</body>
+</html>
