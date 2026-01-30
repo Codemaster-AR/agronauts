@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroNauts: Cultivating the Sustainable Future</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-padding-top: 80px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .nav-link.active {
+            color: #4A6A52;
+            font-weight: 700;
+            position: relative;
+        }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #4A6A52;
+        }
+        .sub-nav-link {
+            padding: 4px 0;
+            color: #789E88;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.2s ease;
+            display: block;
+            text-decoration: none;
+        }
+        .sub-nav-link:hover {
+            color: #4A6A52;
+        }
+        .sub-nav-link.active-sub-link {
+            color: #4A6A52;
+            font-weight: 600;
+            border-left: 3px solid #4A6A52;
+            background-color: #f0f4f0;
+        }
+        
+        #chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 100%;
+            max-width: 340px;
+        }
+
+        #chat-window {
+            height: 400px;
+            transform: translateY(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #chat-window.open {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #chat-toggle-button {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        #chat-toggle-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(74, 106, 82, 0.4);
+        }
+
+        #chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #F8FAF7;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .message-bubble {
+            max-width: 85%;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 1rem;
+            line-height: 1.4;
+        }
+        
+        .user-message {
+            background-color: #A3C9A8;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 0.25rem;
+        }
+        
+        .bot-message {
+            background-color: #E9F5DB;
+            color: #4A6A52;
+            margin-right: auto;
+            border-bottom-left-radius: 0.25rem;
+        }
+        
+        .loading-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #4A6A52;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAF7] text-[#4A6A52]">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="#" class="text-2xl font-bold text-[#4A6A52]">AgroNauts</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-[#789E88] hover:text-[#4A6A52] transition pb-1 active">Home</a>
+                    <a href="#research" class="nav-link text-[#789E88] hover:hover:text-[#4A6A52] transition pb-1">Research</a>
+                    <a href="#contact" class="nav-link text-[#789E88] hover:hover:text-[#4A6A52] transition pb-1">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div id="home-content" class="tab-content active container mx-auto p-4 md:p-8">
+            <header class="bg-gradient-to-b from-[#A3C9A8]/20 to-[#F8FAF7] py-20 text-center rounded-lg">
+                <div class="container mx-auto px-4">
+                    <h1 class="text-4xl md:text-6xl font-bold text-[#4A6A52] mb-4">Welcome to AgroNauts</h1>
+                    <p class="text-xl md:text-2xl text-[#789E88] max-w-3xl mx-auto">Pioneering a sustainable revolution in urban agriculture with AI and IoT.</p>
+                     <a href="#research" class="nav-link-cta mt-8 inline-block bg-[#4A6A52] text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-[#3B5642] transition">Explore Our Research</a>
+                </div>
+            </header>
+            
+            <section class="text-center my-16">
+                 <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
+                 <p class="max-w-3xl mx-auto text-lg text-[#789E88] mb-12">To build a sustainable future by making food production more efficient, accessible, and environmentally friendly for urban populations worldwide.</p>
+            </section>
+
+            <section class="my-24 fade-in-section container mx-auto px-4 max-w-4xl">
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                    <h3 class="text-2xl font-bold text-center mb-4 text-[#4A6A52]">Initial Kit Cost Breakdown (660 AED Total)</h3>
+                    <p class="text-center text-[#789E88] mb-4">Detailed cost structure for the 3x5 ft system, including components (550 AED) and the 20% miscellaneous cost (110 AED).</p>
+                    <div class="chart-container h-[400px] max-h-[500px]">
+                        <canvas id="costBreakdownChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="technology" class="my-24 fade-in-section container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">The Technology Powering AgroNauts</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                        <h3 class="text-2xl font-bold mb-4">The Earth Rover 🤖</h3>
+                        <p class="mb-6 text-[#789E88]">Our autonomous rover is a mobile soil lab. Packed with IoT sensors, it performs on-site analysis of barren land.</p>
+                        <p class="mb-6 text-[#789E88]">We have built a rover that detects soil moisture and monitors air quality using an Arduino Uno. It collects data from sensors, sends it wirelessly via IoT, and stores it in a database, allowing us to track environmental conditions in real time. Building this rover has given us hands-on experience in robotics and IoT while helping us explore smarter ways to manage soil and the environment.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center"><span class="bg-[#A3C9A8] text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold text-sm">1</span>Analyzes soil fertility, pH & moisture.</li>
+                            <li class="flex items-center"><span class="bg-[#A3C9A8] text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold text-sm">2</span>AI suggests natural restoration strategies.</li>
+                            <li class="flex items-center"><span class="bg-[#A3C9A8] text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold text-sm">3</span>Maps ideal crops for the restored land.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                        <h3 class="text-2xl font-bold mb-4">Smart Home Hydroponics 🌱</h3>
+                        <p class="mb-6 text-[#789E88] font-semibold">
+                            Modern techniques such as hydroponics and aeroponics are efficient agricultural methods that are used to grow fruits and vegetables. Such methods save over $97\%$ of water, and yield crops over $50$ times faster, bringing more with less while maintaining quality. We have designed a powerful innovation that utilizes hydroponics to yield crops rapidly while using minimal water along with a closed-looped water mechanism.
+                        </p>
+                        <p class="mb-6 text-[#789E88]">Our IoT-enabled kits bring farming into your home. AI takes care of the hard work, so you can enjoy fresh food.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center"><span class="bg-[#A3C9A8] text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold text-sm">1</span>Monitors nutrients, water & light cycles.</li>
+                            <li class="flex items-center"><span class="bg-[#A3C9A8] text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold text-sm">2</span>AI automates adjustments for optimal growth.</li>
+                            <li class="flex items-center"><span class="bg-[#A3C9A8] text-white rounded-full h-6 w-6 flex items-center justify-center mr-3 font-bold text-sm">3</span>Grow fresh produce with minimal effort.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="research-content" class="tab-content">
+            <header class="bg-gradient-to-b from-[#A3C9A8]/20 to-[#F8FAF7] pt-12 pb-20 text-center">
+                <div class="container mx-auto px-4">
+                    <h1 class="text-4xl md:text-6xl font-bold text-[#4A6A52] mb-4">Cultivating the Future</h1>
+                    <p class="text-xl md:text-2xl text-[#789E88] max-w-3xl mx-auto">AgroNauts is pioneering a sustainable revolution in urban agriculture with AI and IoT.</p>
+                </div>
+            </header>
+
+            <div class="container mx-auto p-4 md:p-8">
+                
+                <div class="lg:grid lg:grid-cols-12 lg:gap-12">
+                    
+                    <aside id="research-sidebar" class="hidden lg:block lg:col-span-3">
+                        <div class="sticky top-28 p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+                            <h3 class="text-lg font-bold mb-4 border-b pb-2 text-[#4A6A52]">Research Sections</h3>
+                            <nav class="space-y-3 text-sm">
+                                <a href="#problem" class="sub-nav-link" data-target="problem">The Challenge We Face</a>
+                                <a href="#solution" class="sub-nav-link" data-target="solution">Our Integrated Solution</a>
+                                <a href="#commercial-model" class="sub-nav-link" data-target="commercial-model">Commercial Model & Viability</a>
+                                <a href="#hydroponics-benefits" class="sub-nav-link" data-target="hydroponics-benefits">The Power of Hydroponics</a>
+                                <a href="#impact" class="sub-nav-link" data-target="impact">The Benefits Scorecard</a>
+                            </nav>
+                        </div>
+                    </aside>
+
+                    <div class="lg:col-span-9">
+                        
+                        <section id="problem" class="text-center my-16 fade-in-section">
+                            <h2 class="text-3xl font-bold mb-4">The Challenge We Face</h2>
+                            <p class="max-w-3xl mx-auto text-lg text-[#789E88] mb-12">By 2050, our planet will have nearly 10 billion people to feed, but our available farmland is shrinking. We need a smarter way to grow.</p>
+
+                            <div class="bg-white rounded-xl shadow-xl p-8 max-w-xl mx-auto mb-16 border-l-8 border-[#A3C9A8] text-left card-hover">
+                                <h3 class="text-xl font-bold mb-3 text-[#4A6A52]">The Water Crisis in Traditional Farming</h3>
+                                <p class="text-lg text-[#789E88]">
+                                    Every year, over $5.4$ quadrillion liters of water are used in farming fruits and vegetables, an unfathomable amount. For comparison, that volume is more than enough to fill the entire Grand Canyon. This critical problem, along with its profound consequences, is often overlooked. In reality, conserving this water could support millions of organisms globally—including communities facing water shortages and species threatened by aridness and changing climatic conditions.
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                                    <p class="text-6xl font-bold text-[#A3C9A8]">2 Billion</p>
+                                    <p class="text-lg mt-2 text-[#4A6A52]">More people to feed by 2050</p>
+                                </div>
+                                <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                                    <p class="text-6xl font-bold text-[#A3C9A8]">33%</p>
+                                    <p class="text-lg mt-2 text-[#4A6A52]">Of Earth's soil is already degraded</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="solution" class="my-24 fade-in-section">
+                            <h2 class="text-3xl font-bold text-center mb-8">Our Integrated Solution: Urban Sustainability</h2>
+                            <p class="text-center max-w-4xl mx-auto text-lg text-[#789E88] mb-12">AgroNauts solves the urban food challenge by providing an easy, automated, water-saving, and space-efficient way for city dwellers to grow clean, pesticide-free produce.</p>
+                            <div class="bg-white rounded-xl shadow-lg p-10">
+                                <div class="flex flex-col md:flex-row items-center justify-around text-center">
+                                    <div class="p-4">
+                                        <p class="text-6xl mb-4">🤖</p>
+                                        <h3 class="text-2xl font-bold mb-2">1. Land Reclamation (Future)</h3>
+                                        <p class="text-[#789E88]">Using AI and robotics to analyze and restore barren lands, turning wasted space into fertile ground.</p>
+                                    </div>
+                                    <div class="text-5xl text-[#A3C9A8] font-thin my-6 md:my-0">+</div>
+                                    <div class="p-4">
+                                        <p class="text-6xl mb-4">🌱</p>
+                                        <h3 class="text-2xl font-bold mb-2">2. Hydroponics for All (Immediate)</h3>
+                                        <p class="text-[#789E88]">Making automated, high-yield hydroponic farming an easy and integral part of every home and office in the city.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="commercial-model" class="my-24 fade-in-section">
+                            <h2 class="text-3xl font-bold text-center mb-8">Commercial Model & Viability</h2>
+                            <p class="text-center max-w-4xl mx-auto text-lg text-[#789E88] mb-12">AgroNauts is built on a diversified revenue strategy targeting key high-value sectors for sustainable growth. **Total System Cost: 660 AED** (Includes 550 AED in components and 20% for Installation/Transport).</p>
+                            
+                            <div class="max-w-2xl mx-auto">
+                                <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                                    <h3 class="text-2xl font-bold mb-4 text-[#4A6A52]">Target Customers</h3>
+                                    <ul class="space-y-2 text-[#789E88] text-lg">
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🏠</span> Homes & Apartments</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🏢</span> Offices & Corporations</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🏫</span> Schools & Universities</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🍎</span> Community Markets</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🍽️</span> Restaurants & Hotels</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🏥</span> Healthcare Facilities</li>
+                                    </ul>
+                                    <h3 class="text-2xl font-bold mt-8 mb-4 text-[#4A6A52]">Revenue Streams</h3>
+                                    <ul class="space-y-2 text-[#789E88] text-lg">
+                                        <li class="flex items-center"><span class="text-2xl mr-3">💰</span> **Direct Sales:** Hydroponic kits.</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🔄</span> **Leasing:** Monthly rental to businesses.</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">🔧</span> **Maintenance:** Annual service contracts.</li>
+                                        <li class="flex items-center"><span class="text-2xl mr-3">📦</span> **Subscriptions:** Seeds, nutrients, etc.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                        </section>
+
+                        <section id="hydroponics-benefits" class="my-24 fade-in-section">
+                            <h2 class="text-3xl font-bold text-center mb-12">The Power of Hydroponics</h2>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                                    <h3 class="text-2xl font-bold text-center mb-4">Drastic Water Reduction</h3>
+                                    <p class="text-center text-[#789E88] mb-4">Hydroponic systems use a fraction of the water compared to traditional soil farming, making it ideal for dry regions and water conservation.</p>
+                                    <div class="chart-container">
+                                        <canvas id="waterUsageChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                                    <h3 class="text-2xl font-bold text-center mb-4">Maximum Yield, Minimum Space</h3>
+                                    <p class="text-center text-[#789E88] mb-4">Grow more food in smaller areas. Our systems are perfect for urban environments where space is a premium.</p>
+                                     <div class="chart-container">
+                                        <canvas id="spaceEfficiencyChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="impact" class="my-24 fade-in-section">
+                            <h2 class="text-3xl font-bold text-center mb-8">Comprehensive Impact: The Benefits Scorecard</h2>
+                            <p class="text-center max-w-4xl mx-auto text-lg text-[#789E88] mb-12">AgroNauts provides holistic benefits, directly addressing concerns about environmental sustainability and personal health simultaneously.</p>
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                                
+                                <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-8 card-hover">
+                                    <h3 class="text-2xl font-bold text-center mb-4">Performance Comparison (AgroNauts vs. Traditional)</h3>
+                                    <div class="chart-container h-[400px] max-h-[500px]">
+                                        <canvas id="impactRadarChart"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div class="lg:col-span-1 bg-white rounded-xl shadow-lg p-8 h-full flex flex-col justify-center card-hover">
+                                    <h3 class="text-2xl font-bold mb-6">Critical Value Propositions</h3>
+                                    <ul class="space-y-5">
+                                        <li class="flex items-start">
+                                            <span class="text-3xl mr-4 mt-1">🚀</span>
+                                            <div>
+                                                <p class="font-bold">Max Space Utilization</p>
+                                                <p class="text-sm text-[#789E88]">High-density, vertical farming for urban spaces.</p>
+                                            </div>
+                                        </li>
+                                         <li class="flex items-start">
+                                            <span class="text-3xl mr-4 mt-1">🌿</span>
+                                            <div>
+                                                <p class="font-bold">Fresh & Pesticide-Free</p>
+                                                <p class="text-sm text-[#789E88]">Controlled environments eliminate harmful chemicals.</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-3xl mr-4 mt-1">📉</span>
+                                            <div>
+                                                <p class="font-bold">Reduced Carbon Footprint</p>
+                                                <p class="text-sm text-[#789E88]">Growing locally eliminates transport emissions.</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-3xl mr-4 mt-1">💪</span>
+                                            <div>
+                                                <p class="font-bold">Healthier Lifestyle</p>
+                                                <p class="text-sm text-[#789E88]">Immediate access to nutrient-dense produce.</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+
+        <div id="contact-content" class="tab-content container mx-auto p-4 md:p-8">
+             <section class="text-center my-16">
+                 <h2 class="text-4xl md:text-5xl font-bold text-[#4A6A52] mb-12">Meet the AgroNauts Core Team</h2>
+                 
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                     
+                     <div class="bg-white rounded-xl shadow-lg p-8 text-left border-t-4 border-[#A3C9A8] card-hover">
+                         <h3 class="text-3xl font-extrabold text-[#4A6A52] mb-2">Anay Rustogi</h3>
+                         <p class="text-xl font-semibold text-[#789E88] mb-6">Technology & Product Development</p>
+                         
+                         <h4 class="text-lg font-bold text-[#4A6A52] mb-1">Focus:</h4>
+                         <p class="text-[#789E88] mb-4">Automating the entire growing process.</p>
+                         
+                         <h4 class="text-lg font-bold text-[#4A6A52] mb-2">Key Responsibilities:</h4>
+                         <ul class="list-disc list-inside space-y-3 text-sm text-[#789E88] ml-2">
+                             <li><strong>System Design:</strong> Developing and building the hydroponic model—the self-contained unit that grows the food without soil.</li>
+                             <li><strong>Automation:</strong> Integrating sensors, pumps, and software to monitor and control water, nutrient, and light levels automatically.</li>
+                             <li><strong>User Experience (UX):</strong> Making sure the system is simple to set up and easy to manage for urban growers, even beginners. Basically, he makes the technology work so the user doesn’t have to.</li>
+                         </ul>
+                     </div>
+
+                     <div class="bg-white rounded-xl shadow-lg p-8 text-left border-t-4 border-[#A3C9A8] card-hover">
+                         <h3 class="text-3xl font-extrabold text-[#4A6A52] mb-2">Ahan Jadhav</h3>
+                         <p class="text-xl font-semibold text-[#789E88] mb-6">Research & Costing Analyst</p>
+                         
+                         <h4 class="text-lg font-bold text-[#4A6A52] mb-1">Focus:</h4>
+                         <p class="text-[#789E88] mb-4">Ensuring the solution is affordable, practical, and has a clear path to success.</p>
+                         
+                         <h4 class="text-lg font-bold text-[#4A6A52] mb-2">Key Responsibilities:</h4>
+                         <ul class="list-disc list-inside space-y-3 text-sm text-[#789E88] ml-2">
+                             <li><strong>Market Research:</strong> Deeply investigating the market to understand competitors, target customers, and existing pain points for urban and sustainable farming.</li>
+                             <li><strong>Cost Analysis:</strong> Breaking down all expenses (materials, manufacturing, operations) to create a feasible and profitable business plan.</li>
+                             <li><strong>Sustainability & Viability:</strong> Analyzing different materials and methods to make sure the final product is not only effective but also cost-effective and sustainable for mass production.</li>
+                         </ul>
+                     </div>
+                 </div>
+                 
+                 <hr class="my-16 border-t border-[#A3C9A8]/50 max-w-4xl mx-auto">
+                 
+                 <h2 class="text-3xl font-bold mb-4">Get In Touch</h2>
+                 <p class="max-w-2xl mx-auto text-lg text-[#789E88] mb-12">Have questions or want to partner with us? We'd love to hear from you. Reach out, and let's cultivate the future together.</p>
+
+                 <div class="mb-8 p-4 bg-white rounded-xl shadow-lg inline-block">
+                    <p class="text-lg font-semibold text-[#4A6A52]">Email us directly:</p>
+                    <a href="mailto:codemaster.ar@gmail.com" class="text-xl font-bold text-[#A3C9A8] hover:text-[#789E88] transition-colors">codemaster.ar@gmail.com</a>
+                 </div>
+                 
+                 <div class="bg-white rounded-xl shadow-lg p-8 card-hover max-w-2xl mx-auto text-left">
+                     <form onsubmit="handleContact(event)">
+                         <div class="mb-4">
+                             <label for="name" class="block text-sm font-bold mb-2">Name</label>
+                             <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A3C9A8]" required>
+                         </div>
+                         <div class="mb-4">
+                             <label for="email" class="block text-sm font-bold mb-2">Email</label>
+                             <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A3C9A8]" required>
+                         </div>
+                         <div class="mb-6">
+                             <label for="message" class="block text-sm font-bold mb-2">Message</label>
+                             <textarea id="message" name="message" rows="5" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A3C9A8]" required></textarea>
+                         </div>
+                         <div class="text-center">
+                             <button type="submit" class="bg-[#4A6A52] text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-[#3B5642] transition">Send Message</button>
+                         </div>
+                     </form>
+                    <div id="contact-message" class="hidden mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg" role="alert">
+                    </div>
+                 </div>
+            </section>
+        </div>
+
+    </main>
+    
+    <footer class="bg-[#4A6A52] text-white text-center p-8 mt-12">
+        <div class="container mx-auto">
+            <p class="text-2xl font-bold mb-2">Join the AgroNauts Movement</p>
+            <p class="text-[#E9F5DB]">An AI & IoT Initiative for a Sustainable Planet.</p>
+            <p class="mt-4 text-sm opacity-70">AgroNauts &copy; 2025</p>
+        </div>
+    </footer>
+    
+    <div id="chatbot-container">
+        <div id="chat-window" class="rounded-xl overflow-hidden mb-3 border border-gray-200">
+            <div class="bg-[#4A6A52] text-white p-4 font-bold flex justify-between items-center">
+                <span>AgroBot Support</span>
+                <button onclick="toggleChat()" class="text-white hover:text-gray-200 text-xl font-thin">&times;</button>
+            </div>
+            <div id="chat-messages">
+            </div>
+            <div class="p-3 bg-white flex">
+                <input type="text" id="chat-input" placeholder="Ask a question about AgroNauts..." class="w-full p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#A3C9A8]">
+                <button onclick="sendMessage()" class="bg-[#A3C9A8] text-white p-2 rounded-r-lg hover:bg-[#789E88] transition flex-shrink-0">
+                    Send
+                </button>
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+             <button id="chat-toggle-button" onclick="toggleChat()" class="bg-[#A3C9A8] text-white p-4 rounded-full shadow-xl flex items-center justify-center text-3xl font-bold">
+                 💬
+            </button>
+        </div>
+    </div>
+
+<script>
+    const AGROBOT_INITIAL_GREETING = "Hello! I am AgroBot. I can tell you about our **mission**, the **team** (**Anay Rustogi** and **Ahan Jadhav**), **research data**, or any of the site sections (**Home**, **Research**, **Contact**). What would you like to know?";
+    const AGROBOT_FOLLOWUP_GREETING = "Thanks for the greeting! I'm ready for your question about AgroNauts.";
+    
+    const AGROBOT_KNOWLEDGE_CONTEXT = `
+        AgroNauts is a project focused on sustainable urban agriculture using AI and IoT.
+        Mission: To build a sustainable future by making food production more efficient, accessible, and environmentally friendly for urban populations worldwide.
+        Team: The co-founders are Anay Rustogi (Technology & Product Development) and Ahan Jadhav (Research & Costing Analyst).
+        Cost: The Total System Cost is **660 AED** (AED 550 for components, AED 110 for misc. 20%).
+        Research Data: By 2050, 2 Billion more people need to be fed; 33% of Earth's soil is degraded. Traditional agriculture uses over 5.4 quadrillion liters of water annually for fruits and vegetables.
+        Technology (Located on Home Page): **Earth Rover** (AI/IoT for land analysis/restoration) and **Smart Home Hydroponics** (AI-automated kits).
+        Earth Rover Details: Our autonomous rover is a mobile soil lab. Packed with IoT sensors, it performs on-site analysis of barren land. We have built a rover that detects soil moisture and monitors air quality using an Arduino Uno. It collects data from sensors, sends it wirelessly via IoT, and stores it in a database, allowing us to track environmental conditions in real time. Building this rover has given us hands-on experience in robotics and IoT while helping us explore smarter ways to manage soil and the environment.
+        Hydroponics Details: Modern techniques such as hydroponics and aeroponics are efficient agricultural methods. Such methods save over 97% of water, and yield crops over 50 times faster, bringing more with less while maintaining quality. We have designed a powerful innovation that utilizes hydroponics to yield crops rapidly while using minimal water along with a closed-looped water mechanism.
+        Commercial Model: Targets Homes, Offices, and Institutions. Revenue streams are **Direct Sales**, **Leasing**, **Maintenance**, and **Subscriptions**.
+        Contact: Email is **codemaster.ar@gmail.com**.
+        Hydroponics Benefits: Uses **97% less water**, offers **50x yield density** over traditional farming.
+        Site Sections: **Home** (Mission, Cost Breakdown, Technology), **Research** (Challenge, Solution, Commercial Model, Impact), **Contact** (Team, Form, Email).
+    `;
+    
+    let isChatOpen = false;
+    let chatInitialized = false;
+
+    function handleContact(event) {
+        event.preventDefault(); 
+        const form = event.target;
+        const nameInput = document.getElementById('name').value;
+        const messageBox = document.getElementById('contact-message');
+        
+        messageBox.innerHTML = `Thank you, <span class="font-bold">${nameInput}</span>! Your message has been received. We will be in touch shortly.`;
+        messageBox.classList.remove('hidden');
+
+        setTimeout(() => {
+            form.reset();
+        }, 3000); 
+    }
+
+    function addMessageToChat(text, sender, isLoading = false) {
+        const messagesDiv = document.getElementById('chat-messages');
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('message-bubble');
+        
+        if (sender === 'user') {
+            newMessage.classList.add('user-message', 'ml-auto');
+            newMessage.textContent = text;
+        } else {
+            newMessage.classList.add('bot-message', 'mr-auto');
+            if (isLoading) {
+                newMessage.id = 'loading-message';
+                newMessage.innerHTML = '<span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>';
+            } else {
+                newMessage.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
+            }
+        }
+        
+        messagesDiv.appendChild(newMessage);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        return newMessage;
+    }
+
+    function removeLoadingMessage() {
+        const loadingMessage = document.getElementById('loading-message');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+    }
+
+    async function fetchWithRetry(url, options, maxRetries = 3) {
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                const response = await fetch(url, options);
+                if (response.status === 429 && i < maxRetries - 1) {
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    continue;
+                }
+                return response;
+            } catch (error) {
+                if (i < maxRetries - 1) {
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    continue;
+                }
+                throw error;
+            }
+        }
+    }
+
+    async function handleLLMResponse(userQuery) {
+        const apiKey = "AIzaSyD1kRHT3DhVPpcnq4u1lQ0w1djii6LwoOg";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        
+        const systemPrompt = `You are AgroBot, the conversational AI for the AgroNauts project. Your primary goal is to provide concise, accurate, and supportive information based ONLY on the following context about AgroNauts. 
+        Context: ${AGROBOT_KNOWLEDGE_CONTEXT}
+        
+        Instructions:
+        1. Base all answers strictly on the provided context about AgroNauts.
+        2. If a user asks a question unrelated to AgroNauts (e.g., about general knowledge, history, other companies), politely decline and redirect them back to the AgroNauts topic. Example refusal: "I can only provide information about the AgroNauts project, such as our mission or technology. What would you like to know about AgroNauts?"
+        3. Keep responses friendly, concise, and professional. Use markdown **bolding** for key project terms.`;
+
+        const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            systemInstruction: {
+                parts: [{ text: systemPrompt }]
+            },
+        };
+
+        try {
+            const response = await fetchWithRetry(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            const result = await response.json();
+            const candidate = result.candidates?.[0];
+
+            let botResponse = "I apologize, but I encountered an internal error while processing your request. Please try asking again.";
+
+            if (candidate && candidate.content?.parts?.[0]?.text) {
+                botResponse = candidate.content.parts[0].text;
+            } else {
+                console.error('LLM response structure was invalid:', result);
+            }
+
+            removeLoadingMessage();
+            addMessageToChat(botResponse, 'bot');
+
+        } catch (error) {
+            console.error('API call failed after retries:', error);
+            removeLoadingMessage();
+            addMessageToChat("I'm sorry, I couldn't connect to the core system to answer that. Please try again in a moment.", 'bot');
+        }
+    }
+
+
+    async function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const userText = input.value.trim();
+        
+        if (userText === '') return;
+
+        addMessageToChat(userText, 'user');
+        
+        input.value = '';
+
+        const isGreeting = (/(hi|hello|hey|greetings)/i).test(userText) && userText.trim().split(/\s+/).length < 4;
+
+        if (isGreeting) {
+            setTimeout(() => {
+                addMessageToChat(AGROBOT_FOLLOWUP_GREETING, 'bot');
+            }, 500);
+        } else {
+            addMessageToChat('...', 'bot', true);
+            await handleLLMResponse(userText);
+        }
+    }
+
+    function toggleChat() {
+        const chatWindow = document.getElementById('chat-window');
+        isChatOpen = !isChatOpen;
+        chatWindow.classList.toggle('open', isChatOpen);
+        
+        if (isChatOpen) {
+             document.getElementById('chat-input').focus();
+        }
+    }
+    
+    function initializeChat() {
+        if (!chatInitialized) {
+            addMessageToChat(AGROBOT_INITIAL_GREETING, 'bot');
+            chatInitialized = true;
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeChat();
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const homeCtaLink = document.querySelector('.nav-link-cta');
+        
+        let chartsInitialized = false;
+
+        function switchTab(targetId) {
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            const contentId = targetId.substring(1) + '-content';
+            const targetContent = document.getElementById(contentId);
+            const targetLink = document.querySelector(`a[href="${targetId}"]`);
+            
+            if(targetContent) targetContent.classList.add('active');
+            if(targetLink) targetLink.classList.add('active');
+
+            if (contentId === 'research-content') {
+                setTimeout(updateSubNav, 100); 
+            }
+        }
+
+        const researchSections = document.querySelectorAll('#research-content .lg\\:col-span-9 section');
+        const subNavLinks = document.querySelectorAll('.sub-nav-link');
+        
+        subNavLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                }
+            });
+        });
+
+        function updateSubNav() {
+            let currentActiveSectionId = null;
+            const scrollY = window.scrollY;
+            const offset = 100;
+
+            researchSections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+
+                if (scrollY + offset >= sectionTop && scrollY + offset < sectionTop + sectionHeight) {
+                    currentActiveSectionId = section.id;
+                }
+            });
+
+            subNavLinks.forEach(link => {
+                link.classList.remove('active-sub-link');
+                if (link.dataset.target === currentActiveSectionId) {
+                    link.classList.add('active-sub-link');
+                }
+            });
+        }
+        
+        function handleResearchScrollSpy() {
+            if (document.getElementById('research-content').classList.contains('active')) {
+                updateSubNav();
+            }
+        }
+        
+        window.addEventListener('scroll', handleResearchScrollSpy);
+        window.addEventListener('resize', handleResearchScrollSpy);
+
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                switchTab(targetId);
+                document.querySelector('main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        if(homeCtaLink) {
+             homeCtaLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                switchTab(targetId);
+                document.querySelector('main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+
+
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && isChatOpen) {
+                toggleChat();
+            }
+        });
+
+
+        function initializeCharts() {
+            function wrapLabels(label, maxWidth) {
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxWidth) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            
+            const tooltipTitleCallback = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            const waterUsageCanvas = document.getElementById('waterUsageChart');
+            if (waterUsageCanvas) {
+                new Chart(waterUsageCanvas.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Water Saved by Hydroponics', 'Traditional Farming Water Usage'],
+                        datasets: [{
+                            label: 'Water Usage',
+                            data: [90, 10],
+                            backgroundColor: ['#789E88', '#E9F5DB'],
+                            borderColor: ['#FFFFFF'],
+                            borderWidth: 4,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { ...tooltipTitleCallback.plugins, legend: { position: 'bottom' }, title: { display: false } }, cutout: '70%' }
+                });
+            }
+
+            const spaceEfficiencyCanvas = document.getElementById('spaceEfficiencyChart');
+            if (spaceEfficiencyCanvas) {
+                new Chart(spaceEfficiencyCanvas.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Hydroponics Yield per m²', 'Traditional Farming Yield per m²'].map(l => wrapLabels(l, 16)),
+                        datasets: [{
+                            label: 'Relative Yield', data: [10, 2],
+                            backgroundColor: ['#A3C9A8', '#E9F5DB'],
+                            borderColor: ['#789E88', '#A3C9A8'],
+                            borderWidth: 1, borderRadius: 5
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { beginAtZero: true, title: { display: true, text: 'Relative Yield Factor' } } }, plugins: { ...tooltipTitleCallback.plugins, legend: { display: false } } }
+                });
+            }
+            
+            const costBreakdownCanvas = document.getElementById('costBreakdownChart');
+            if (costBreakdownCanvas) {
+                new Chart(costBreakdownCanvas.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Hydroponic Kit (AED 250)', 'IoT & Automation (AED 300)', 'Installation/Transport (AED 110)'].map(l => wrapLabels(l, 18)),
+                        datasets: [{
+                            label: 'Cost in AED', data: [250, 300, 110], 
+                            backgroundColor: ['#4A6A52', '#789E88', '#A3C9A8'],
+                            borderColor: '#F8FAF7', borderWidth: 1, borderRadius: 4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, title: { display: true, text: 'Cost in AED' } } }, plugins: { ...tooltipTitleCallback.plugins, legend: { display: false } } }
+                });
+            }
+
+            const impactRadarCanvas = document.getElementById('impactRadarChart');
+            if (impactRadarCanvas) {
+                new Chart(impactRadarCanvas.getContext('2d'), {
+                    type: 'radar',
+                    data: {
+                        labels: ['Pesticide-Free (Max 10)', 'Water Efficiency (Max 10)', 'Yield Density (Max 10)', 'Carbon Footprint Reduction (Max 10)'].map(l => wrapLabels(l, 16)),
+                        datasets: [
+                            {
+                                label: 'AgroNauts System', data: [10, 9, 8, 9], fill: true,
+                                backgroundColor: 'rgba(74, 106, 82, 0.4)', borderColor: '#4A6A52',
+                                pointBackgroundColor: '#4A6A52', pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff', pointHoverBorderColor: '#4A6A52'
+                            },
+                            {
+                                label: 'Traditional Farming', data: [4, 2, 4, 3], fill: true,
+                                backgroundColor: 'rgba(163, 201, 168, 0.4)', borderColor: '#789E88',
+                                pointBackgroundColor: '#789E88', pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff', pointHoverBorderColor: '#789E88'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        elements: { line: { borderWidth: 3 } },
+                        plugins: { ...tooltipTitleCallback.plugins, legend: { position: 'top' } },
+                        scales: { r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 10, pointLabels: { font: { size: 11 } }, ticks: { backdropColor: 'transparent' } } }
+                    }
+                });
+            }
+        }
+
+        document.getElementById('chatbot-container').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+
+        switchTab('#home');
+        
+        if (!chartsInitialized) {
+            initializeCharts();
+            chartsInitialized = true;
+        }
+    });
+</script>
+
+</body>
+</html>
