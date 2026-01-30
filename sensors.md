@@ -35,3 +35,6 @@ Rev 2 explore kit
 [https://docs.arduino.cc/hardware/mkr-wifi-1010/](https://docs.arduino.cc/hardware/mkr-wifi-1010/)
 [https://www.arduino.cc/](https://www.arduino.cc/)
 [https://docs.arduino.cc/](https://docs.arduino.cc/)
+
+### My custom Word document which can be printed:
+[https://innoventureseducation-my.sharepoint.com/:w:/g/personal/dia17068_diaestudents_com/IQDcnP3i3NLmQ5up9MsKILxWAZvX3Np8l9EDiRVbW_eVMz8?e=XozrN8](https://innoventureseducation-my.sharepoint.com/:w:/g/personal/dia17068_diaestudents_com/IQDcnP3i3NLmQ5up9MsKILxWAZvX3Np8l9EDiRVbW_eVMz8?e=XozrN8)
