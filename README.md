@@ -38,3 +38,6 @@ Our website home page: [https://codemaster-ar.github.io/agronauts/](https://code
 
 ## Acknowledgments
 We would like to thank our supporters and partners who have helped make this project possible.
+
+## Canva
+Canva: [https://www.canva.com/design/DAG4MQmd-_A/zSiH63_r8whHYFIFrM_Unw/edit?utm_content=DAG4MQmd-_A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton](https://www.canva.com/design/DAG4MQmd-_A/zSiH63_r8whHYFIFrM_Unw/edit?utm_content=DAG4MQmd-_A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
