@@ -31,8 +31,10 @@ Agronauts is released under the [MIT License](https://opensource.org/licenses/MI
 ## Contact
 For any questions, suggestions, or collaboration opportunities, please don't hesitate to reach out:
 
-* Email: [your email address]
-* Social media: [your social media profiles]
+* Email: [codemaster.ar@gmail.com]
+
+### Website:
+Our website home page: [https://codemaster-ar.github.io/agronauts/](https://codemaster-ar.github.io/agronauts/)
 
 ## Acknowledgments
 We would like to thank our supporters and partners who have helped make this project possible.
