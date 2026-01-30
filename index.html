@@ -17,7 +17,6 @@
             color: #e2e8f0;
         }
 
-        /* Animated Gradient Background */
         .bg-glow {
             position: absolute;
             top: 50%;
@@ -35,7 +34,6 @@
             100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
         }
 
-        /* Title Floating & Glow Effect */
         .title-glow {
             text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
             animation: float 4s ease-in-out infinite;
@@ -124,7 +122,6 @@
     <canvas id="particleCanvas"></canvas>
 
     <div class="content">
-        <!-- Catchphrase -->
         <span class="catchphrase text-xs md:text-sm mb-4 block">Cultivating the future</span>
         
         <h1 class="text-7xl md:text-9xl font-black tracking-tighter title-glow text-green-400">
@@ -134,7 +131,6 @@
             Pioneering the future of sustainable agriculture through intelligent design and organic innovation.
         </p>
         
-        <!-- Action Buttons Grid -->
         <div class="mt-12 flex flex-wrap justify-center gap-4">
             <a href="https://codemaster-ar.github.io/agronauts/about/" target="_blank" class="px-8 py-4 rounded-full text-sm font-bold btn-action uppercase tracking-widest">
                 About us
@@ -157,13 +153,11 @@
         </div>
     </div>
 
-    <!-- Contact Footer -->
     <div class="contact-footer text-center">
         Contact <a href="mailto:codemaster.ar@gmail.com" class="contact-link">codemaster.ar@gmail.com</a> for more details
     </div>
 
     <script>
-        // Particle Animation Logic
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
