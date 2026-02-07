@@ -70,5 +70,11 @@ Best QR code generator: [https://qrcodecreator.com/dashboard](https://qrcodecrea
 ## Copyright
 Everything is copyrighted except the credit links.
 
+
+### Are you the owner?
+Private repository link: [https://github.com/Codemaster-AR/agronauts-private](https://github.com/Codemaster-AR/agronauts-private)
+
 ### Check out my other project:
 [https://github.com/Codemaster-AR/GPR-Hub](https://github.com/Codemaster-AR/GPR-Hub)
+
+
