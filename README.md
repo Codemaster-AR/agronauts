@@ -11,7 +11,7 @@ Agronauts is a project that aims to enhance agricultural practices and contribut
 ## Project Website
 For more information about the project, please visit our dedicated website:
 
-* [Agronauts Website](https://agronauts.w3spaces.com/)
+* [Agronauts Website](https://codemaster-ar.github.io/agronauts/)
 
 ## Project Structure
 Our project is built on the principles of [open innovation](https://en.wikipedia.org/wiki/Open_innovation) and [collaborative research](https://en.wikipedia.org/wiki/Collaborative_research). We strive to create a comprehensive platform that fosters knowledge sharing, innovation, and community engagement.
