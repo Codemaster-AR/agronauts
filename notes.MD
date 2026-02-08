@@ -19,3 +19,5 @@ Nutrient Lockout: When VPD is too high, the plant cannot take up nutrients prope
 Symptoms: You will likely see leaf curling, cupping, and crispy leaf edges. 
 How to Fix It:
 To bring the VPD down to a safer range for a sapling, you must increase humidity (using a humidifier or humidity dome) or lower the temperature. For reference, the ideal VPD for vegetative growth is 0.8–1.2 kPa, and it should only be in the high range (>1.6 kPa) during the late stages of flowering. 
+
+[Humidifier](https://www.amazon.ae/dp/B09PB7ZJW9/?_encoding=UTF8&aref=DGW73rFSuv&pd_rd_i=B09PB7ZJW9&ref_=sbx_be_s_sparkle_ssd_tt&qid=1770551294&pd_rd_w=4C2No&content-id=amzn1.sym.7b3967c8-56e1-4401-9d1a-a91d93d3a6bd%3Aamzn1.sym.7b3967c8-56e1-4401-9d1a-a91d93d3a6bd&pf_rd_p=7b3967c8-56e1-4401-9d1a-a91d93d3a6bd&pf_rd_r=D2411W16RY9EP1B2W76Q&pd_rd_wg=vf36S&pd_rd_r=cfa68a3b-a4a6-467b-9312-3e1cb0c14a04&pd_rd_plhdr=t)
