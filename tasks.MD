@@ -5,3 +5,8 @@
 
 ### Update physical model design
 [https://www.tinkercad.com/things/gKojZsONJvR-agronauts-home-design-brave-kasi?sharecode=AHofHg_Pvm1LKmef2jdxrkt4iCvBTxl69CjTWLnIXgw](https://www.tinkercad.com/things/gKojZsONJvR-agronauts-home-design-brave-kasi?sharecode=AHofHg_Pvm1LKmef2jdxrkt4iCvBTxl69CjTWLnIXgw)
+
+### And...
+Add gas chambers
+Physical waste mangament
+Pest control
