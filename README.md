@@ -52,7 +52,7 @@ Canva: [https://www.canva.com/design/DAG4MQmd-_A/zSiH63_r8whHYFIFrM_Unw/edit?utm
 [https://codemaster-ar.github.io/agronauts-controller/](https://codemaster-ar.github.io/agronauts-controller/)
 
 ## Credits
-o
+[https://github.com/Codemaster-AR/agronauts/blob/main/credits.MD](https://github.com/Codemaster-AR/agronauts/blob/main/credits.MD)
 
 ## Copyright
 Everything is copyrighted except the credit links.
