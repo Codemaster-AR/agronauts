@@ -1,5 +1,6 @@
 # Agronauts: Cultivating the future
 Advancing Agricultural Sustainability
+___
 
 ## Overview
 Agronauts is a project that aims to enhance agricultural practices and contribute to a more sustainable food system. This project is a part of the renowned 'Farm to Table' competition, organized by [Edustream AE](https://edustream.ae/steam-champions-uae-2025-2026/).
