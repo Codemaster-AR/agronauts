@@ -6,7 +6,7 @@
 ### Update physical model design
 [https://www.tinkercad.com/things/gKojZsONJvR-agronauts-home-design-brave-kasi?sharecode=AHofHg_Pvm1LKmef2jdxrkt4iCvBTxl69CjTWLnIXgw](https://www.tinkercad.com/things/gKojZsONJvR-agronauts-home-design-brave-kasi?sharecode=AHofHg_Pvm1LKmef2jdxrkt4iCvBTxl69CjTWLnIXgw)
 
-### And...
+### More to do with the physical model:
 - Add gas chambers
 
 
@@ -14,3 +14,9 @@
 
 
 - Pest control
+
+
+### Software:
+- Gas monitoring
+
+- More to come (maybe)
