@@ -5,6 +5,9 @@
 
 ### Update physical model design
 [https://www.tinkercad.com/things/gKojZsONJvR-agronauts-home-design-brave-kasi?sharecode=AHofHg_Pvm1LKmef2jdxrkt4iCvBTxl69CjTWLnIXgw](https://www.tinkercad.com/things/gKojZsONJvR-agronauts-home-design-brave-kasi?sharecode=AHofHg_Pvm1LKmef2jdxrkt4iCvBTxl69CjTWLnIXgw)
+Acrylic sheets and plastic wodden pillars
+you can drill into acrylic sheets so no prob
+vigger size than current model
 
 ### More to do with the physical model:
 - Add gas chambers
