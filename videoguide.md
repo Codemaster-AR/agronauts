@@ -15,3 +15,8 @@ Consequently, then Ahan speaks abut his rover:
 - reporting
 - ai analysis as well
 - 
+
+
+
+DraftL
+Today, lots of water that is used is actually wasted ineffectively, and we can modernize farming to make it more autonoamous. Say goodbye to overwatering and manual work. Our model provides automatical growth monitoring and utilizes AI analuysis to provife
