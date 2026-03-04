@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llama AI Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .chat-container { height: calc(100vh - 180px); }
+        .glass-morphism {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
+        @keyframes pulse-custom {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .loading-dot { animation: pulse-custom 1.4s infinite; }
+    </style>
+</head>
+<body class="bg-[#0b0f1a] text-gray-100 font-sans min-h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="p-4 border-b border-gray-800 bg-gray-900/40 flex justify-between items-center z-10">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg leading-none tracking-tight">Llama 3.3</h1>
+                <p id="connectionStatus" class="text-[10px] uppercase tracking-wider text-yellow-500 mt-1 flex items-center font-bold">
+                    <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-1.5"></span> Initializing...
+                </p>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+            <div class="hidden sm:flex items-center space-x-1 bg-gray-800/50 p-1 rounded-lg border border-gray-700/50">
+                <button id="methodPost" onclick="setMethod('POST')" class="px-3 py-1 text-[10px] font-bold rounded bg-indigo-600 text-white transition-all">POST</button>
+                <button id="methodGet" onclick="setMethod('GET')" class="px-3 py-1 text-[10px] font-bold rounded text-gray-400 hover:text-white transition-all">GET</button>
+            </div>
+            <button onclick="clearChat()" class="hover:bg-gray-800 p-2 rounded-lg transition-colors text-gray-400" title="Clear Chat">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Chat Area -->
+    <main id="chatWindow" class="chat-container overflow-y-auto p-4 md:p-10 space-y-6 flex-grow flex flex-col">
+        <div class="flex flex-col items-center justify-center py-12 text-center space-y-4">
+            <div class="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center border border-gray-800 shadow-xl">
+                <span class="text-2xl">🦙</span>
+            </div>
+            <h2 class="text-xl font-semibold">How can I help you today?</h2>
+            <p class="text-gray-500 text-sm max-w-xs">Chatting with Llama-3.3-70B via your custom Cloudflare Worker proxy.</p>
+        </div>
+    </main>
+
+    <!-- Typing Indicator -->
+    <div id="typingIndicator" class="hidden px-6 md:px-12 py-2">
+        <div class="flex space-x-2 items-center text-indigo-400 text-xs font-medium bg-indigo-500/10 w-fit px-3 py-1 rounded-full border border-indigo-500/20">
+            <div class="flex space-x-1">
+                <div class="w-1 h-1 bg-indigo-400 rounded-full loading-dot"></div>
+                <div class="w-1 h-1 bg-indigo-400 rounded-full loading-dot" style="animation-delay: 0.2s"></div>
+                <div class="w-1 h-1 bg-indigo-400 rounded-full loading-dot" style="animation-delay: 0.4s"></div>
+            </div>
+            <span>Llama is typing</span>
+        </div>
+    </div>
+
+    <!-- Input Bar -->
+    <footer class="p-4 md:p-6 bg-gradient-to-t from-[#0b0f1a] to-transparent">
+        <div class="max-w-4xl mx-auto relative group">
+            <textarea 
+                id="userInput" 
+                rows="1" 
+                placeholder="Ask anything..." 
+                class="w-full bg-gray-900/80 border border-gray-800 rounded-2xl py-4 pl-5 pr-14 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 resize-none transition-all glass-morphism shadow-2xl"
+            ></textarea>
+            <button 
+                id="sendBtn"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:cursor-not-allowed p-2.5 rounded-xl transition-all shadow-lg hover:scale-105 active:scale-95"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+            </button>
+        </div>
+        <p class="text-[9px] text-center text-gray-600 mt-3 font-medium uppercase tracking-widest">Powered by Groq & Cloudflare Workers</p>
+    </footer>
+
+    <script>
+        const chatWindow = document.getElementById('chatWindow');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const connectionStatus = document.getElementById('connectionStatus');
+        
+        let currentMethod = 'POST';
+        let chatHistory = [];
+        const PROXY_URL = 'https://ai-cli-connect-stable.pages.dev/llamageneral';
+        const DEFAULT_MODEL = 'llama-3.3-70b-versatile';
+
+        // Check connection on start
+        async function probeProxy() {
+            try {
+                // We use GET for the health check
+                const res = await fetch(`${PROXY_URL}?prompt=Hi`, { mode: 'cors' });
+                if (res.ok) {
+                    connectionStatus.innerHTML = '<span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span> Proxy Connected';
+                    connectionStatus.classList.replace('text-yellow-500', 'text-green-500');
+                } else { throw new Error(); }
+            } catch (e) {
+                connectionStatus.innerHTML = '<span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5 animate-pulse"></span> Offline / CORS Blocked';
+                connectionStatus.classList.replace('text-yellow-500', 'text-red-500');
+            }
+        }
+        probeProxy();
+
+        function setMethod(method) {
+            currentMethod = method;
+            const postBtn = document.getElementById('methodPost');
+            const getBtn = document.getElementById('methodGet');
+            
+            [postBtn, getBtn].forEach(b => b.classList.remove('bg-indigo-600', 'text-white'));
+            [postBtn, getBtn].forEach(b => b.classList.add('text-gray-400'));
+            
+            const active = method === 'POST' ? postBtn : getBtn;
+            active.classList.add('bg-indigo-600', 'text-white');
+            active.classList.remove('text-gray-400');
+        }
+
+        async function handleSend() {
+            const text = userInput.value.trim();
+            if (!text || sendBtn.disabled) return;
+
+            addMessage(text, 'user');
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            
+            typingIndicator.classList.remove('hidden');
+            sendBtn.disabled = true;
+            chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
+
+            try {
+                let response;
+                const requestOptions = { mode: 'cors' };
+
+                if (currentMethod === 'POST') {
+                    response = await fetch(PROXY_URL, {
+                        ...requestOptions,
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            model: DEFAULT_MODEL,
+                            messages: [...chatHistory, { role: "user", content: text }]
+                        })
+                    });
+                } else {
+                    const params = new URLSearchParams({ model: DEFAULT_MODEL, prompt: text });
+                    response = await fetch(`${PROXY_URL}?${params.toString()}`, { 
+                        ...requestOptions, 
+                        method: 'GET' 
+                    });
+                }
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `Error ${response.status}`);
+                }
+
+                const data = await response.json();
+                const aiText = data.choices?.[0]?.message?.content || "Received an empty response.";
+
+                addMessage(aiText, 'assistant');
+                
+                // Keep history for POST (multiturn)
+                if (currentMethod === 'POST') {
+                    chatHistory.push({ role: "user", content: text });
+                    chatHistory.push({ role: "assistant", content: aiText });
+                }
+
+            } catch (error) {
+                console.error("API Error:", error);
+                let displayError = error.message;
+                if (displayError.includes("Failed to fetch")) {
+                    displayError = "Connection Failed. Ensure your Worker has CORS enabled and is deployed.";
+                }
+                addMessage(`System Alert: ${displayError}`, 'system');
+            } finally {
+                typingIndicator.classList.add('hidden');
+                sendBtn.disabled = false;
+                chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        function addMessage(content, role) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-500`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = `max-w-[85%] px-5 py-3.5 rounded-2xl shadow-sm ${
+                role === 'user' 
+                ? 'bg-indigo-600 text-white rounded-tr-none' 
+                : role === 'system'
+                ? 'bg-red-500/10 text-red-400 text-xs border border-red-500/20 font-mono italic'
+                : 'bg-gray-800/80 border border-gray-700/50 text-gray-100 rounded-tl-none'
+            }`;
+
+            bubble.innerHTML = content.replace(/\n/g, '<br>');
+            wrapper.appendChild(bubble);
+            chatWindow.appendChild(wrapper);
+            chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
+        }
+
+        function clearChat() {
+            chatWindow.innerHTML = '';
+            chatHistory = [];
+        }
+
+        userInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+        });
+
+        sendBtn.addEventListener('click', handleSend);
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+            }
+        });
+    </script>
+</body>
+</html>
