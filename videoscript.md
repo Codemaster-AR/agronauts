@@ -1,6 +1,6 @@
 # Hydroponic Farming Revolution
 ==========================
-
+ 
 ## Overview
 
 Welcome to the future of sustainable farming. Our hydroponic system combines cutting-edge technology with innovative farming practices to produce high-quality crops while minimizing water usage, land requirements, and environmental impact.
@@ -83,3 +83,7 @@ Welcome to the future of sustainable farming. Our hydroponic system combines cut
 - Be part of the future of sustainable farming
 - Partner with us to integrate our hydroponic system into your farm or business
 - Together, we can revolutionize the way we grow crops and reduce our environmental impact
+- Chatbot for inofrimation
+
+- - video shoud ideally be 40 seconds
+  -   
