@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Canvas Particles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0f172a;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        canvas {
+            display: block;
+        }
+        .controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: auto;
+            user-select: none;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls shadow-2xl">
+        <h2 class="text-xl font-bold mb-4">Canvas Particles</h2>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Particle Count</label>
+                <input type="range" id="count" min="50" max="500" value="150" class="w-full accent-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Connection Distance</label>
+                <input type="range" id="distance" min="50" max="250" value="120" class="w-full accent-blue-500">
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-medium">Auto-Move Mouse</span>
+                <input type="checkbox" id="autoMove" class="w-4 h-4">
+            </div>
+            <button id="reset" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition-colors font-semibold">
+                Randomize Colors
+            </button>
+            <p class="text-xs text-slate-400 mt-2 italic">Move your mouse or touch the screen to interact.</p>
+        </div>
+    </div>
+
+    <canvas id="mainCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        const countInput = document.getElementById('count');
+        const distanceInput = document.getElementById('distance');
+        const autoMoveCheck = document.getElementById('autoMove');
+        const resetBtn = document.getElementById('reset');
+
+        let particles = [];
+        let width, height;
+        let mouse = { x: null, y: null, radius: 150 };
+        let hue = 200;
+
+        // Resize handler
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+            }
+
+            update() {
+                // Movement
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off walls
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                // Mouse interaction
+                if (mouse.x !== null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < mouse.radius) {
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        const directionX = dx / distance;
+                        const directionY = dy / distance;
+                        this.x -= directionX * force * 5;
+                        this.y -= directionY * force * 5;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `hsl(${hue}, 70%, 70%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            const count = parseInt(countInput.value);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function drawLines() {
+            const maxDist = parseInt(distanceInput.value);
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < maxDist) {
+                        const opacity = 1 - (dist / maxDist);
+                        ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${opacity * 0.5})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate(time) {
+            ctx.clearRect(0, 0, width, height);
+            
+            if (autoMoveCheck.checked) {
+                mouse.x = width / 2 + Math.sin(time / 1000) * (width * 0.3);
+                mouse.y = height / 2 + Math.cos(time / 800) * (height * 0.3);
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            drawLines();
+            requestAnimationFrame(animate);
+        }
+
+        // Event Listeners
+        window.addEventListener('resize', resize);
+        
+        window.addEventListener('mousemove', (e) => {
+            if (!autoMoveCheck.checked) {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            }
+        });
+
+        window.addEventListener('mousedown', () => {
+            mouse.radius = 300;
+        });
+
+        window.addEventListener('mouseup', () => {
+            mouse.radius = 150;
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+        });
+
+        window.addEventListener('touchend', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        countInput.addEventListener('input', init);
+        resetBtn.addEventListener('click', () => {
+            hue = Math.floor(Math.random() * 360);
+        });
+
+        // Start
+        window.onload = () => {
+            resize();
+            requestAnimationFrame(animate);
+        };
+    </script>
+</body>
+</html>
