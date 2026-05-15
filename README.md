@@ -63,6 +63,7 @@ ___
 
 ### Are you the owner?
 Private repository link: [https://github.com/Codemaster-AR/agronauts-private](https://github.com/Codemaster-AR/agronauts-private)
+Link to  Canva: [https://canva.link/pmv9u7knzrv1slf](https://canva.link/pmv9u7knzrv1slf)
 
 ### Check out my other project:
 [https://github.com/Codemaster-AR/GPR-Hub](https://github.com/Codemaster-AR/GPR-Hub)
